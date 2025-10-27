@@ -1,6 +1,6 @@
 ﻿using DataAccess.Model;
 
-namespace DataAccess
+namespace DataAccess.Interface
 {
     public interface IAuthorDao
 
