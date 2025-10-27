@@ -23,7 +23,7 @@ namespace DataAccess.SQL_Server
         }
         public IEnumerable<Author> GetAll()
         {
-            var query = "SELECT * FROM Authors";
+            var query = "SELECT * FROM Author";
             using var connection = CreateConnection();
             return connection.Query<Author>(query).ToList();
         }
