@@ -25,5 +25,16 @@ namespace BlogSharp.Test.DataAccessTests
             Assert.That(authors.Count(), Is.EqualTo(3), "Der blev forventede 3");
 
         }
+
+        [Test]
+        public void AuthorDao_Create()
+        {
+            //arrange
+
+            //act
+
+            //assert
+
+        }
     }
 }

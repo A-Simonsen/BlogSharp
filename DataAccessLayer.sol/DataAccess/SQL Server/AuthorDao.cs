@@ -1,6 +1,8 @@
-﻿using DataAccess.Interface;
+﻿using Dapper;
+using DataAccess.Interface;
 using DataAccess.Model;
-using Dapper;
+using DataAccess.Tools;
+using static Dapper.SqlMapper;
 namespace DataAccess.SQL_Server
 {
     public class AuthorDao : BaseDao, IAuthorDao
@@ -23,7 +25,10 @@ namespace DataAccess.SQL_Server
         }
         public int Create(Author author)
         {
-            throw new NotImplementedException();
+            var query = "INSERT INTO Author (Email, BlogTitle, PasswordHash) OUTPUT INSERTED.Id VALUES(@Email, @BlogTitle, @PasswordHash)";
+            var passwordHash = BCryptTool.HashPassword(author.PasswordHash);
+            using var connection = CreateConnection();
+            return connection.QuerySingle<int>(query, new { author.Email, author.BlogTitle, PasswordHash = passwordHash });
         }
         public bool Update(Author author)
         {
