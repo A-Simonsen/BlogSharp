@@ -67,7 +67,23 @@ namespace BlogSharp.ApiClient
 
         public int Create(Author author)
         {
-            throw new NotImplementedException();
+            var request = new RestRequest("authors", Method.Post);
+            request.AddJsonBody(author);
+
+            var response = _restClient.Execute<int>(request);
+            if (response == null)
+            {
+                throw new Exception("NO response from server");
+            }
+            if (response.IsSuccessStatusCode)
+            {
+                return response.Data;
+            }
+            else
+            {
+                throw new Exception("Server reply: Unsuccessful request");
+            }
+
         }
 
         public BlogPost? GetOne(int id)

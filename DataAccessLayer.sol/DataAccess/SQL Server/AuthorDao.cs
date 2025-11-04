@@ -1,43 +1,75 @@
-﻿using Dapper;
+﻿using BlogSharp2025.DataAccessLibrary.Interfaces;
+using BlogSharp2025.DataAccessLibrary.Model;
+using BlogSharp2025.DataAccessLibrary;
+using Dapper;
 using DataAccess.Interface;
 using DataAccess.Model;
+using DataAccess.SQL_Server;
 using DataAccess.Tools;
+using System.Linq;
 using static Dapper.SqlMapper;
-namespace DataAccess.SQL_Server
+
+namespace BlogSharp2025.DataAccessLibrary.SqlServer;
+public class AuthorDao : BaseDao, IAuthorDao
 {
-    public class AuthorDao : BaseDao, IAuthorDao
+    //constructor which passes
+    //the connectionstring to BaseDao
+    public AuthorDao(string connectionString) : base(connectionString) { }
+
+
+    public int Create(Author author)
     {
-        // Constructor which passed the connection string to the base class
-        public AuthorDao(string connectionString) : base(connectionString)
-        {
+        var query = "INSERT INTO Author (Email, BlogTitle, PasswordHash) OUTPUT INSERTED.Id VALUES (@Email, @BlogTitle, @PasswordHash);";
+        var passwordHash = BCryptTool.HashPassword(author.PasswordHash);
+        using var connection = CreateConnection();
+        return connection.QuerySingle<int>(query, new { Email = author.Email, BlogTitle = author.BlogTitle, PasswordHash = passwordHash });
+    }
 
+    public bool Delete(int id)
+    {
+        var query = "DELETE FROM Author WHERE Id = @Id;";
+        using var connection = CreateConnection();
+        var rows = connection.Execute(query, new { Id = id });
+        return rows > 0;
+    }
+
+    public IEnumerable<Author> GetAll()
+    {
+        var query = "SELECT * FROM Author";
+        using var connection = CreateConnection();
+        return connection.Query<Author>(query).ToList();
+    }
+
+    public Author? Get(int id)
+    {
+        var query = "SELECT * FROM Author WHERE Id = @Id";
+        using var connection = CreateConnection();
+        return connection.QuerySingleOrDefault<Author>(query, new { Id = id });
+    }
+
+    public bool Update(Author author)
+    {
+        // Determine password hash to store:
+        // - if caller provided a non-empty value, hash it unless it looks already like a bcrypt hash
+        // - if caller did not provide a password, keep existing hash
+        string passwordHash;
+        if (string.IsNullOrWhiteSpace(author.PasswordHash))
+        {
+            var existing = Get(author.Id);
+            if (existing == null) return false;
+            passwordHash = existing.PasswordHash;
+        }
+        else
+        {
+            // bcrypt hashes start with $2a$/$2b$/$2y$ etc.
+            passwordHash = author.PasswordHash.StartsWith("$2") ? author.PasswordHash : BCryptTool.HashPassword(author.PasswordHash);
         }
 
-        public Author? Get(int Id)
-        {
-            throw new NotImplementedException();
-        }
-        public IEnumerable<Author> GetAll()
-        {
-            var query = "SELECT * FROM Author";
-            using var connection = CreateConnection();
-            return connection.Query<Author>(query).ToList();
-        }
-        public int Create(Author author)
-        {
-            var query = "INSERT INTO Author (Email, BlogTitle, PasswordHash) OUTPUT INSERTED.Id VALUES(@Email, @BlogTitle, @PasswordHash)";
-            var passwordHash = BCryptTool.HashPassword(author.PasswordHash);
-            using var connection = CreateConnection();
-            return connection.QuerySingle<int>(query, new { author.Email, author.BlogTitle, PasswordHash = passwordHash });
-        }
-        public bool Update(Author author)
-        {
-            throw new NotImplementedException();
-        }
-        public bool Delete(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
+        var query = @"UPDATE Author 
+                      SET Email = @Email, BlogTitle = @BlogTitle, PasswordHash = @PasswordHash
+                      WHERE Id = @Id;";
+        using var connection = CreateConnection();
+        var rows = connection.Execute(query, new { Email = author.Email, BlogTitle = author.BlogTitle, PasswordHash = passwordHash, Id = author.Id });
+        return rows > 0;
     }
 }
