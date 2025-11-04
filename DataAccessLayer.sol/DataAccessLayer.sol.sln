@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSharp.Test", "BlogSharp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSharp.Api", "BlogSharp.Api\BlogSharp.Api.csproj", "{5C998ACE-232C-4146-807A-D141D877BF56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSharp.ApiClient", "BlogSharp.ApiClient\BlogSharp.ApiClient.csproj", "{D4F1D614-F17F-4D1F-AE52-3F7D002CEBDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5C998ACE-232C-4146-807A-D141D877BF56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C998ACE-232C-4146-807A-D141D877BF56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C998ACE-232C-4146-807A-D141D877BF56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4F1D614-F17F-4D1F-AE52-3F7D002CEBDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4F1D614-F17F-4D1F-AE52-3F7D002CEBDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4F1D614-F17F-4D1F-AE52-3F7D002CEBDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4F1D614-F17F-4D1F-AE52-3F7D002CEBDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
