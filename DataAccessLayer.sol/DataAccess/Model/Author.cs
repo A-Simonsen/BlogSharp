@@ -18,7 +18,7 @@
             BlogTitle = blogTitle;
         }
 
-        public Author(string email, string blogTitle)
+        public Author(string blogTitle, string email)
         {
             Email = email;
             BlogTitle = blogTitle;

@@ -1,10 +1,13 @@
 using DataAccess.Interface;
+using DataAccess.Model;
 using DataAccess.SQL_Server;
+using Microsoft.Extensions.Configuration;
 
 namespace BlogSharp.Test.DataAccessTests
 {
     public class AuthorDaoTest
     {
+        //private var config = new ConfigurationBuilder().AddUserSecrets<AuthorDaoTest>().Build();
         private const string connectionString = "Data Source=localhost;Initial Catalog=BlogSharp;User ID=sa;Password=@12tf56so;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
         [SetUp]
@@ -26,15 +29,22 @@ namespace BlogSharp.Test.DataAccessTests
 
         }
 
-        [Test]
-        public void AuthorDao_Create()
-        {
-            //arrange
+        //[Test]
+        //public void AuthorDao_Create()
+        //{
+        //    //arrange
+        //    IAuthorDao authorDao = new AuthorDao(connectionString);
+        //    Author author = new Author
+        //    (
+        //        Email = "test.user@example.com",
+        //        BlogTitle = "Test Blog Title"
+        //    );
 
-            //act
+        //    //act
+        //    var newId = authorDao.Create(author);
 
-            //assert
-
-        }
+        //    //assert
+        //    Assert.That(newId, Is.GreaterThan(0));
+        //}
     }
 }
